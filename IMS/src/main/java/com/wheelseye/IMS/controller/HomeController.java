@@ -1,4 +1,4 @@
-package com.wheelseye.IMS;
+package com.wheelseye.IMS.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

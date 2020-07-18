@@ -1,4 +1,4 @@
-package com.wheelseye.IMS;
+package com.wheelseye.IMS.sec;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,6 +8,9 @@ import java.util.Set;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.wheelseye.IMS.model.Employee;
+import com.wheelseye.IMS.model.Role;
 
 public class MyEmployeeDetails implements UserDetails{
 	private Employee employee;

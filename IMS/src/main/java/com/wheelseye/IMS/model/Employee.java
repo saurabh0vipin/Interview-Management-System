@@ -1,4 +1,4 @@
-package com.wheelseye.IMS;
+package com.wheelseye.IMS.model;
 
 import java.util.HashSet;
 import java.util.Set;

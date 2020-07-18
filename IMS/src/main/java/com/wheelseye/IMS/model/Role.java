@@ -1,4 +1,4 @@
-package com.wheelseye.IMS;
+package com.wheelseye.IMS.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
