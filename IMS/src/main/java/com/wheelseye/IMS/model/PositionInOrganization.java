@@ -13,7 +13,7 @@ public class PositionInOrganization {
 	@Id
 	@Column(name="postion_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long postionId;
+	private Long postionId;
 	
 	@Column(name="postion_name")
 	private String postionName;
@@ -28,11 +28,11 @@ public class PositionInOrganization {
 		this.postionName = postionName;
 	}
 
-	public long getPostionId() {
+	public Long getPostionId() {
 		return postionId;
 	}
 
-	public void setPostionId(long postionId) {
+	public void setPostionId(Long postionId) {
 		this.postionId = postionId;
 	}
 

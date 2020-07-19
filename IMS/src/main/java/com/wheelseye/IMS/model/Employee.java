@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -37,6 +38,10 @@ public class Employee {
 			inverseJoinColumns = @JoinColumn(name = "role_id")
 			)
 	private Set<Role> roles = new HashSet<>();
+	
+	@OneToMany(mappedBy="employee")
+	private Set<Round> round=new HashSet<>();
+	
 
 	public Long getId() {
 		return id;
@@ -92,6 +97,15 @@ public class Employee {
 
 	public void setEmailid(String emailid) {
 		this.emailid = emailid;
-	} 
+	}
 
+	public Set<Round> getRound() {
+		return round;
+	}
+
+	public void setRound(Set<Round> round) {
+		this.round = round;
+	} 
+	
+	
 }
