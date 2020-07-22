@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -17,79 +18,96 @@ public class Interviewee {
 	@Id
 	@Column(name="Interviewee_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long intervieweeId;
+	private Long id;
 	
 	@Column(name="name")
-	private String name;
+	private String intervieweeName;
 	
-	@Column(name="email_id")
-	private String emailID;
+	@Column(name="phone_no", unique = true)
+	private String intervieweePhoneNumber;
 	
-	@Column(name="phone_no")
-	private Long phoneNo;
+	@Column(name="email_id", unique = true)
+	private String intervieweeMail;
 	
-	@Column(name="resume")
-	private String resume;
-
+	@Column(name="Experience")
+	private String yearsOfExperience;
+	
+	@Column(name="resume_name")
+	private String resumeName;
+	
+	@Column(name="resume_format")
+	private String resumeType;
+	
+	@Lob
+	private byte[] data;
+	
 	@OneToMany(mappedBy="interviewee")
 	private Set<Application> application =new HashSet<>();
 	
-	public Interviewee() {
+	public Interviewee() { }
+
+	public Long getId() {
+		return id;
 	}
 
-
-	public Interviewee(String name, String emailID, Long phoneNo, String resume) {
-		super();
-		this.name = name;
-		this.emailID = emailID;
-		this.phoneNo = phoneNo;
-		this.resume = resume;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-
-	
-	public Long getIntervieweeId() {
-		return intervieweeId;
+	public String getResumeName() {
+		return resumeName;
 	}
 
-
-	public void setIntervieweeId(Long intervieweeId) {
-		this.intervieweeId = intervieweeId;
+	public void setResumeName(String resumeName) {
+		this.resumeName = resumeName;
 	}
 
-
-	public String getName() {
-		return name;
+	public String getResumeType() {
+		return resumeType;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setResumeType(String resumeType) {
+		this.resumeType = resumeType;
 	}
 
-	public String getEmailID() {
-		return emailID;
+	public String getIntervieweeName() {
+		return intervieweeName;
 	}
 
-	public void setEmailID(String emailID) {
-		this.emailID = emailID;
+	public void setIntervieweeName(String intervieweeName) {
+		this.intervieweeName = intervieweeName;
 	}
 
-	public Long getPhoneNo() {
-		return phoneNo;
+	public String getIntervieweePhoneNumber() {
+		return intervieweePhoneNumber;
 	}
 
-	public void setPhoneNo(Long phoneNo) {
-		this.phoneNo = phoneNo;
+	public void setIntervieweePhoneNumber(String intervieweePhoneNumber) {
+		this.intervieweePhoneNumber = intervieweePhoneNumber;
 	}
 
-	public String getResume() {
-		return resume;
+	public String getIntervieweeMail() {
+		return intervieweeMail;
 	}
 
-	public void setResume(String resume) {
-		this.resume = resume;
+	public void setIntervieweeMail(String intervieweeMail) {
+		this.intervieweeMail = intervieweeMail;
 	}
-	
-	
-	
+
+	public String getYearsOfExperience() {
+		return yearsOfExperience;
+	}
+
+	public void setYearsOfExperience(String yearsOfExperience) {
+		this.yearsOfExperience = yearsOfExperience;
+	}
+
+	public byte[] getData() {
+		return data;
+	}
+
+	public void setData(byte[] data) {
+		this.data = data;
+	}
 }
+

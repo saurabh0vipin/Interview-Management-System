@@ -22,10 +22,14 @@
 		Welcome Interviewer 
 	</div>
 	<div sec:authorize="hasAnyAuthority('INTERVIEWEE')">
-		Welcome Interviewee 
+		Welcome Interviewee <br><br>
+				
+		<a href="newinterviewee">Apply Here</a>
 	</div>
 	<div sec:authorize="hasAnyAuthority('HR')">
 		Welcome HR Team 
+		<br><br>
+		<a href="listinterviewee">List Of Interviewees</a>
 	</div>
 	<div sec:authorize="hasAnyAuthority('ADMIN')">
 		Welcome Admin 

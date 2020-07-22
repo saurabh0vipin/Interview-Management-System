@@ -13,6 +13,10 @@ import com.wheelseye.IMS.model.Employee;
 import com.wheelseye.IMS.model.Role;
 
 public class MyEmployeeDetails implements UserDetails{
+	/**
+	 * 
+	 */
+	//private static final long serialVersionUID = 1L;
 	private Employee employee;
 	
 	public MyEmployeeDetails(Employee employee) {
