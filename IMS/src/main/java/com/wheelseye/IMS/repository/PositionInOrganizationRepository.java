@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.wheelseye.IMS.model.PositionInOrganization;
 
 @Repository
-public interface PostionInOrganizationRepository extends JpaRepository<PositionInOrganization, Long>{
+public interface PositionInOrganizationRepository extends JpaRepository<PositionInOrganization, Long>{
 
 }

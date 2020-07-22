@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:th="http://www.thymeleaf.org">
+<head>
+<style>
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+</style>
+<meta charset="ISO-8859-1">
+<title>Job Positions</title>
+</head>
+<body>
+
+<div align="center", sec:authorize="isAuthenticated()">
+		Welcome <b><span sec:authentication="name">Employeename</span></b>
+		&nbsp;
+		<i><span sec:authentication="principal.authorities">Roles</span></i>
+		<form th:action="@{/logout}" method="post">
+		<input type="submit" value="Logout" />
+	 	</form>
+	 	<form th:action="@{/back}" method="post">
+		<input type="submit" value="Back" />
+	 	</form>
+</div>
+
+
+<div align="center">
+    <h1>Job Positions in Organization</h1>
+    <a href="/hr/position_in_org/new_pos"> add new position </a>
+    <br/><br/>
+    <table cellpadding="20" style="width:600px">
+        <thead>
+            <tr style="background-color:rgb(150,150,150)">
+                <th>Position Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="jobPosInOrg : ${listOrgPos}">
+               <!--  <td th:text="${jobPosInOrg.positionId}">Position ID</td> -->
+                <td th:text="${jobPosInOrg.positionName}">Position Name</td>
+                <td>
+                     <a th:href="@{'/hr/edit/' + ${jobPosInOrg.positionId}}">Edit</a>
+                    &nbsp;&nbsp;&nbsp;
+                     <a th:href="@{'/hr/delete/' + ${jobPosInOrg.positionId}}">Delete</a> 
+                    &nbsp;&nbsp;&nbsp;
+                     <a th:href="@{'/hr/post_vacancy/' + ${jobPosInOrg.positionId}}">Post vacancy</a>
+               </td>
+            </tr>
+        </tbody>
+    </table>
+</div>   
+</body>
+</html>

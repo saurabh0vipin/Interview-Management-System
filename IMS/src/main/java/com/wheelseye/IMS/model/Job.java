@@ -1,9 +1,5 @@
 package com.wheelseye.IMS.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -28,12 +23,9 @@ public class Job {
 	@Column(name="date_posted")
 	private String datePosted;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="postion_id")
-	private PositionInOrganization postionInOrganization;
-	
-	@OneToMany(mappedBy="job")
-	private Set<Application> application = new HashSet<>();
+	@ManyToOne
+	@JoinColumn(name="position_id")
+	private PositionInOrganization posIn;
 	
 	
 	public Job() {
@@ -69,22 +61,13 @@ public class Job {
 		this.datePosted = datePosted;
 	}
 
-	public PositionInOrganization getPostionInOrganization() {
-		return postionInOrganization;
+	public PositionInOrganization getPosIn() {
+		return posIn;
 	}
 
-	public void setPostionInOrganization(PositionInOrganization postionInOrganization) {
-		this.postionInOrganization = postionInOrganization;
+	public void setPosIn(PositionInOrganization posIn) {
+		this.posIn = posIn;
 	}
-
-	public Set<Application> getApplication() {
-		return application;
-	}
-
-	public void setApplication(Set<Application> application) {
-		this.application = application;
-	} 
-	
 	
 	
 }

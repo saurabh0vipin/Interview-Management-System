@@ -49,6 +49,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/listinterviewee/*").hasAnyAuthority("INTERVIEWER", "HR", "ADMIN")
 			.antMatchers("/deleteinterviewee/*").hasAnyAuthority("HR", "ADMIN")
 			.antMatchers("/downloadFile/*").hasAnyAuthority("INTERVIEWER", "HR", "ADMIN")
+			
+			.antMatchers("/hr/**").hasAuthority("HR")
+			.antMatchers("/interviewee/**").hasAuthority("INTERVIEWEE")
+			.antMatchers("/admin/**").hasAuthority("ADMIN")
+			.antMatchers("/interviewer/**").hasAuthority("INTERVIEWER")
+			
 			.anyRequest().authenticated()
 			.and()
 			.formLogin().permitAll()
