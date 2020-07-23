@@ -28,20 +28,24 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 <div align="center">
     <h1>Available jobs</h1>
     <br/><br/>
+    <a href="/admin/roles">add new Employees</a>
+    <br><br>
     <table cellpadding="20" style="width:800px">
         <thead>
             <tr style="background-color:rgb(150,150,150)">
-                <th>Job Title/Desc</th>
-                <th>Job Posted on (Date)</th>
+                <th>Name</th>
+                <th>Email ID</th>
+                <th>Phone no</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="jobVacancy : ${listJob}">
-                <td th:text="${jobVacancy.jobTitle}">Job Title/Desc</td>
-                <td th:text="${jobVacancy.datePosted}">Job Posted on (Date)</td>
+            <tr th:each="listEmpl : ${empl}">
+                <td th:text="${listEmpl.employeename}">Name</td>
+                <td th:text="${listEmpl.emailid}">Email Id</td>
+                <td th:text="${listEmpl.phonenumber}">Phone no</td>
                 <td>
-                     <a th:href="@{'/interviewee/newinterviewee/' + ${jobVacancy.jobId}}">Apply</a>
+                     <a th:href="@{'/admin/delete/' + ${listEmpl.id}}">Delete</a>
                </td>
             </tr>
         </tbody>

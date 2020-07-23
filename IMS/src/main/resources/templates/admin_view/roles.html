@@ -8,7 +8,7 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 
 </style>
 <meta charset="ISO-8859-1">
-<title>Available jobs</title>
+<title>User Roles</title>
 </head>
 <body>
 
@@ -26,22 +26,20 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 
 
 <div align="center">
-    <h1>Available jobs</h1>
+    <h1>User roles</h1>
     <br/><br/>
-    <table cellpadding="20" style="width:800px">
+    <table cellpadding="20" style="width:600px">
         <thead>
             <tr style="background-color:rgb(150,150,150)">
-                <th>Job Title/Desc</th>
-                <th>Job Posted on (Date)</th>
+                <th>Role Name</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="jobVacancy : ${listJob}">
-                <td th:text="${jobVacancy.jobTitle}">Job Title/Desc</td>
-                <td th:text="${jobVacancy.datePosted}">Job Posted on (Date)</td>
+            <tr th:each="listRoles : ${listRole}">
+                <td th:text="${listRoles.name}">Role Name</td>
                 <td>
-                     <a th:href="@{'/interviewee/newinterviewee/' + ${jobVacancy.jobId}}">Apply</a>
+                     <a th:href="@{'/admin/new_employee/' + ${listRoles.id}}">Create for this role</a>
                </td>
             </tr>
         </tbody>

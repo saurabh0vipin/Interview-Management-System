@@ -8,7 +8,7 @@
 	<div align="center">	
 		<h1>Fill Job Application</h1>
 		<br/>
-		<form action="#" th:action="@{/saveinterviewee}" th:object="${interviewee}" method="post" encType="multipart/form-data">
+		<form action="#" th:action="@{'/interviewee/saveinterviewee/'+${job_id}}" th:object="${interviewee}" method="post" encType="multipart/form-data">
 			<table border="0" cellpadding="10">
 				<tr>
 					<td>Interviewee Name:</td>
