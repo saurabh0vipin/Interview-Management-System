@@ -1,8 +1,9 @@
 package com.wheelseye.IMS.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,8 +42,8 @@ public class Interviewee {
 	@Lob
 	private byte[] data;
 	
-	@OneToMany(mappedBy="interviewee")
-	private Set<Application> application =new HashSet<>();
+	@OneToMany(mappedBy="interviewee", cascade = CascadeType.ALL)
+	List<Application> application =new ArrayList<>();
 	
 	public Interviewee() { }
 

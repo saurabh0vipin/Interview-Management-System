@@ -1,5 +1,7 @@
 package com.wheelseye.IMS.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +23,7 @@ public class Application {
 	private Long applicationId;
 	
 	@Column(name="date_applied_on")
-	private String date;
+	private Date date;
 	
 	@ManyToOne
 	@JoinColumn(name="interviewee_id")
@@ -35,18 +37,18 @@ public class Application {
 	@JoinColumn(name="interview_id")
 	private Interview interview;
 	
-	
-
 	public Application() {
 	}
 
-	public Application(String date, Interviewee interviewee, Job job, Interview interview) {
+	public Application(Date date, Interviewee interviewee, Job job, Interview interview) {
 		super();
 		this.date = date;
 		this.interviewee = interviewee;
 		this.job = job;
 		this.interview = interview;
 	}
+
+
 
 	public Long getApplicationId() {
 		return applicationId;
@@ -56,11 +58,12 @@ public class Application {
 		this.applicationId = applicationId;
 	}
 
-	public String getDate() {
+
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 

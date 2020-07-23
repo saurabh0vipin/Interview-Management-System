@@ -39,6 +39,7 @@ public class JobVacancyController {
 		ModelAndView mv=new ModelAndView("JobOpening/new_job_opening");
 		
 		Job job=new Job();
+		
 		PositionInOrganization pos_in_org= servicePos.get(id);
 		job.setPosIn(pos_in_org);
 		job.setDatePosted(""+java.time.LocalDate.now());

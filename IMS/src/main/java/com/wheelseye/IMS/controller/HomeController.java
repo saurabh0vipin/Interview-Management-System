@@ -1,6 +1,7 @@
 package com.wheelseye.IMS.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +20,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.wheelseye.IMS.model.Application;
+import com.wheelseye.IMS.model.Interview;
 import com.wheelseye.IMS.model.Interviewee;
+import com.wheelseye.IMS.model.Job;
+import com.wheelseye.IMS.service.ApplicationService;
 import com.wheelseye.IMS.service.IntervieweeStorageService;
+import com.wheelseye.IMS.service.JobOpeningService;
 
 @Controller
 public class HomeController {
 	
 	@Autowired
 	IntervieweeStorageService intervieweeStorageService;
+	
+	@Autowired
+	ApplicationService serviceApp;
+	
+	@Autowired
+	JobOpeningService serviceJob;
 	
 	@RequestMapping("/")
 	public String viewHomePage(Model model) {
@@ -40,16 +52,16 @@ public class HomeController {
 		return "interviewee/interviewee";
 	}
 	
-	@RequestMapping("/newinterviewee")
-	public String showNewIntervieweeForm(Model model) {
+	@RequestMapping("/interviewee/newinterviewee/{id}")
+	public String showNewIntervieweeForm(@PathVariable(name = "id") Long job_id, Model model) {
 		Interviewee interviewee = new Interviewee();
 		model.addAttribute("interviewee", interviewee);
-		
+		model.addAttribute("job_id", job_id);
 		return "interviewee/new_interviewee";
 	}
 	
-	@RequestMapping(value = "/saveinterviewee", method = RequestMethod.POST)
-	public String saveInterviewee(@ModelAttribute("interviewee") Interviewee interviewee, @RequestParam("file") MultipartFile file){
+	@RequestMapping(value = "/interviewee/saveinterviewee/{job_id}", method = RequestMethod.POST)
+	public String saveInterviewee(@PathVariable(name = "job_id") Long job_id, @ModelAttribute("interviewee") Interviewee interviewee, @RequestParam("file") MultipartFile file){
 		try {
 			interviewee.setData(file.getBytes());
 		} catch (IOException e) {
@@ -59,8 +71,20 @@ public class HomeController {
 			
 		interviewee.setResumeType(file.getContentType());
 		interviewee.setResumeName(file.getOriginalFilename());
-		
 		intervieweeStorageService.save(interviewee);
+		
+		Interview itrvew=new Interview();
+		itrvew.setStatus("applied");
+		
+		Job job=serviceJob.get(job_id);
+		Application application=new Application();
+		application.setDate(new Date());
+		application.setJob(job);
+		application.setInterviewee(interviewee);
+		application.setInterview(itrvew);
+		
+		serviceApp.save(application);
+		
 		return "redirect:/";
 	}
 	

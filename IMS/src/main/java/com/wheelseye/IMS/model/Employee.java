@@ -1,19 +1,12 @@
 package com.wheelseye.IMS.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -26,22 +19,26 @@ public class Employee {
 	
 
 	private String employeename;
-	private String password;
-	private boolean enabled;
-	private Long phonenumber;
 	private String emailid;
+	private String password;
+	private Long phonenumber;
+	private boolean enabled;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(
-			name = "emp_role",
-			joinColumns = @JoinColumn(name = "emp_id"),
-			inverseJoinColumns = @JoinColumn(name = "role_id")
-			)
-	private Set<Role> roles = new HashSet<>();
+	@ManyToOne
+	@JoinColumn(name="role_id")
+	private Role role;
+
 	
-	@OneToMany(mappedBy="employee")
-	private Set<Round> round=new HashSet<>();
-	
+	public Employee() {
+	}
+
+	public Employee(String employeename, String password, Long phonenumber, String emailid) {
+		super();
+		this.employeename = employeename;
+		this.password = password;
+		this.phonenumber = phonenumber;
+		this.emailid = emailid;
+	}
 
 	public Long getId() {
 		return id;
@@ -67,22 +64,6 @@ public class Employee {
 		this.password = password;
 	}
 
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
-
 	public Long getPhonenumber() {
 		return phonenumber;
 	}
@@ -90,7 +71,15 @@ public class Employee {
 	public void setPhonenumber(Long phonenumber) {
 		this.phonenumber = phonenumber;
 	}
+	
+	public boolean isEnabled() {
+		return enabled;
+	}
 
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+	
 	public String getEmailid() {
 		return emailid;
 	}
@@ -99,13 +88,13 @@ public class Employee {
 		this.emailid = emailid;
 	}
 
-	public Set<Round> getRound() {
-		return round;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setRound(Set<Round> round) {
-		this.round = round;
-	} 
+	public void setRole(Role role) {
+		this.role = role;
+	}
 	
-	
+		
 }
