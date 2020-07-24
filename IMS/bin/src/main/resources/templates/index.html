@@ -17,22 +17,47 @@
 		<input type="submit" value="Logout" />
 	</form>
 	
-	<h1>Interview Manager</h1>
+	<h1>Interview Management System</h1>
+	
+	<!-- INTERVIEWER -->
+	
 	<div sec:authorize="hasAnyAuthority('INTERVIEWER')">
 		Welcome Interviewer 
 	</div>
+	
+<!-- 	INTERVIEWEE -->
+	
 	<div sec:authorize="hasAnyAuthority('INTERVIEWEE')">
 		Welcome Interviewee <br><br>
-				
-		<a href="newinterviewee">Apply Here</a>
-	</div>
+		<br>
+		<hr>
+		<a href="/interviewee/available_jobs">View/apply for job</a>
+		<br><br>
+<!-- 		<a href="newinterviewee">Apply Here</a>
+	 --></div>
+	
+	<!-- HR -->
+	
 	<div sec:authorize="hasAnyAuthority('HR')">
 		Welcome HR Team 
+		<br>
+		<h2> Allowed actions </h2><br>
+		<a href="/hr/position_in_org">View/Add/Remove Job positions</a>
+		<br> <br>
+		<a href="/hr/job_openings">Post/edit/delete Job Vacancies</a>
 		<br><br>
 		<a href="listinterviewee">List Of Interviewees</a>
 	</div>
+	
+	<!-- ADMIN -->
+	
 	<div sec:authorize="hasAnyAuthority('ADMIN')">
 		Welcome Admin 
+		<br>
+		<hr>
+		<h2>Allowed Actions</h2>
+		<br><br>
+		<a href="/admin/view_employee">List Of Interviewees</a>
 	</div>
 </div>
 </body>

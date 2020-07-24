@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:th="http://www.thymeleaf.org">
+<head>
+<style>
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+</style>
+<meta charset="ISO-8859-1">
+<title>User Roles</title>
+</head>
+<body>
+
+<div align="center", sec:authorize="isAuthenticated()">
+		Welcome <b><span sec:authentication="name">Employeename</span></b>
+		&nbsp;
+		<i><span sec:authentication="principal.authorities">Roles</span></i>
+		<form th:action="@{/logout}" method="post">
+		<input type="submit" value="Logout" />
+	 	</form>
+	 	<form th:action="@{/back}" method="post">
+		<input type="submit" value="Back" />
+	 	</form>
+</div>
+
+
+<div align="center">
+    <h1>User roles</h1>
+    <br/><br/>
+    <table cellpadding="20" style="width:600px">
+        <thead>
+            <tr style="background-color:rgb(150,150,150)">
+                <th>Role Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="listRoles : ${listRole}">
+                <td th:text="${listRoles.name}">Role Name</td>
+                <td>
+                     <a th:href="@{'/admin/new_employee/' + ${listRoles.id}}">Create for this role</a>
+               </td>
+            </tr>
+        </tbody>
+    </table>
+</div>   
+</body>
+</html>

@@ -19,7 +19,7 @@ public class Interview {
 	
 	@Column(name="interview_id")
 	private Long interviewId;
-	
+
 	@Column(name="status")
 	private String status;
 	

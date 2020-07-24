@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:th="http://www.thymeleaf.org">
+<head>
+<style>
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+</style>
+<meta charset="ISO-8859-1">
+<title>Available jobs</title>
+</head>
+<body>
+
+<div align="center", sec:authorize="isAuthenticated()">
+		Welcome <b><span sec:authentication="name">Employeename</span></b>
+		&nbsp;
+		<i><span sec:authentication="principal.authorities">Roles</span></i>
+		<form th:action="@{/logout}" method="post">
+		<input type="submit" value="Logout" />
+	 	</form>
+	 	<form th:action="@{/back}" method="post">
+		<input type="submit" value="Back" />
+	 	</form>
+</div>
+
+
+<div align="center">
+    <h1>Available jobs</h1>
+    <br/><br/>
+    <table cellpadding="20" style="width:800px">
+        <thead>
+            <tr style="background-color:rgb(150,150,150)">
+                <th>Job Title/Desc</th>
+                <th>Job Posted on (Date)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="jobVacancy : ${listJob}">
+                <td th:text="${jobVacancy.jobTitle}">Job Title/Desc</td>
+                <td th:text="${jobVacancy.datePosted}">Job Posted on (Date)</td>
+                <td>
+                     <a th:href="@{'/interviewee/newinterviewee/' + ${jobVacancy.jobId}}">Apply</a>
+               </td>
+            </tr>
+        </tbody>
+    </table>
+</div>   
+</body>
+</html>

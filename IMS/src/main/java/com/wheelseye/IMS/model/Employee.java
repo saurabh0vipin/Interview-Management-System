@@ -1,5 +1,8 @@
 package com.wheelseye.IMS.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -27,17 +31,23 @@ public class Employee {
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	private Role role;
-
+	
+	@OneToMany(mappedBy="employee")
+	private Set<Round> round =new HashSet<>();
 	
 	public Employee() {
 	}
 
-	public Employee(String employeename, String password, Long phonenumber, String emailid) {
+	public Employee(String employeename, String emailid, String password, Long phonenumber, boolean enabled, Role role,
+			Set<Round> round) {
 		super();
 		this.employeename = employeename;
+		this.emailid = emailid;
 		this.password = password;
 		this.phonenumber = phonenumber;
-		this.emailid = emailid;
+		this.enabled = enabled;
+		this.role = role;
+		this.round = round;
 	}
 
 	public Long getId() {
@@ -56,6 +66,14 @@ public class Employee {
 		this.employeename = employeename;
 	}
 
+	public String getEmailid() {
+		return emailid;
+	}
+
+	public void setEmailid(String emailid) {
+		this.emailid = emailid;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -71,21 +89,13 @@ public class Employee {
 	public void setPhonenumber(Long phonenumber) {
 		this.phonenumber = phonenumber;
 	}
-	
+
 	public boolean isEnabled() {
 		return enabled;
 	}
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
-	}
-	
-	public String getEmailid() {
-		return emailid;
-	}
-
-	public void setEmailid(String emailid) {
-		this.emailid = emailid;
 	}
 
 	public Role getRole() {
@@ -95,6 +105,14 @@ public class Employee {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-	
-		
+
+	public Set<Round> getRound() {
+		return round;
+	}
+
+	public void setRound(Set<Round> round) {
+		this.round = round;
+	}
+
+
 }

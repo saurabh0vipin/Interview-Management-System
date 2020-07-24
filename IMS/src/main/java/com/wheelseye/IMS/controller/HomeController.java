@@ -74,7 +74,8 @@ public class HomeController {
 		intervieweeStorageService.save(interviewee);
 		
 		Interview itrvew=new Interview();
-		itrvew.setStatus("applied");
+		
+		itrvew.setStatus("Applied");
 		
 		Job job=serviceJob.get(job_id);
 		Application application=new Application();

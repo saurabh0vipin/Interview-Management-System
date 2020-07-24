@@ -14,19 +14,19 @@
             <table border="0" cellpadding="10">
             	 <tr>
                     <td>Employee Name:</td>
-                    <td><input type="text" th:field="*{employeename}" /></td>
+                    <td><input type="text" th:field="*{employeename}" required/></td>
                  </tr>
                 <tr>
                     <td>Email Id:</td>
-                    <td><input type="text" th:field="*{emailid}" /></td>
+                    <td><input type="email" th:field="*{emailid}" required/></td>
                  </tr>
                 <tr>
                     <td>Phone no:</td>
-                    <td><input type="text" th:field="*{phonenumber}" /></td>
+                    <td><input type="tel" pattern="[0-9]{10}" th:field="*{phonenumber}" required/></td>
                  </tr>
                  <tr>
                     <td>Password:</td>
-                    <td><input type="text" th:field="*{password}" /></td>
+                    <td><input type="text" th:field="*{password}" required/></td>
                  </tr>
                  <tr>
                     <td colspan="2"><button type="submit">Save</button> </td>
