@@ -145,9 +145,14 @@ public class InterviewController {
 			interview.setStatus("ScheduledRound3");
 			service.save(interview);
 		}
-		else
+		else //resheduled fall
 		{
-			mv.setViewName("403");
+			Round rnd = serviceR.getRoundByInterviewIdAndRoundStatus(iId,"Scheduled");
+			rnd.setDuration(dur);
+			rnd.setStartDate(LocalDateTime.parse(date));
+			rnd.setEmployee(interviewer);
+			serviceR.save(rnd);
+			mv.setViewName("availibility_page");
 			return mv;
 		}
 		
@@ -157,7 +162,7 @@ public class InterviewController {
 		round.setInterview(interview);
 		round.setRoundStatus("Scheduled");
 		round.setStartDate(LocalDateTime.parse(date));
-		
+		//----------------------
 		serviceR.save(round);
 		mv.setViewName("availibility_page");
 		return mv;
@@ -208,7 +213,7 @@ public class InterviewController {
 	public String resheduleRound(@PathVariable(name="id") Long id)
 	{
 		Long x=serviceR.getInterviewId(id);
-		serviceR.delete(id);
+//		serviceR.delete(id);
 		return "redirect:/hr/show_interviewers/"+x;
 	}
 	
@@ -228,6 +233,7 @@ public class InterviewController {
 	{
 		Interview interview=serviceR.getById(id).getInterview();
 		interview.setStatus("Accepted");
+		service.save(interview);
 		return "redirect:/hr/change_status";
 	}
 	
@@ -236,6 +242,7 @@ public class InterviewController {
 	{
 		Interview interview=serviceR.getById(id).getInterview();
 		interview.setStatus("Rejected");
+		service.save(interview);
 		return "redirect:/hr/change_status";
 	}
 	
@@ -243,7 +250,20 @@ public class InterviewController {
 	public String Promote(@PathVariable(value="id")Long id)
 	{
 		Interview interview=serviceR.getById(id).getInterview();
-		interview.setStatus("Rejected");
+		
+		if(interview.getStatus().equals("ScheduledRound1"))
+		{
+			interview.setStatus("QualifiedRound1");
+		}
+		else if(interview.getStatus().equals("ScheduledRound2"))
+		{
+			interview.setStatus("QualifiedRound2");
+		}
+		else
+		{
+			interview.setStatus("Accepted");
+		}
+		service.save(interview);
 		return "redirect:/hr/change_status";
 	}
 	

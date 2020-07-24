@@ -49,7 +49,7 @@ tr:nth-child(even) {background-color: #f2f2f2;}
                 <td th:text="${round.employee.id}">Interviewer Id</td>
                 <td th:text="${round.interview.interviewId}">Interview Id</td>
                 <td>
-                     <a th:href="@{'/hr/reshedule_round/' + ${round.roundId}}">Reshedule</a>
+                     <a th:href="@{'/hr/reshedule_round/' + ${round.roundId}}">Reschedule</a>
                      &nbsp &nbsp &nbsp
                      <a th:href="@{'/hr/cancel_round/' + ${round.roundId}}">Cancel</a>
                </td>

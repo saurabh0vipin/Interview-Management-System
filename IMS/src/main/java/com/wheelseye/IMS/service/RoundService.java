@@ -44,7 +44,7 @@ public class RoundService {
 		List<Round> res=new ArrayList<>();
 		for(Round r:round)
 		{
-			if(r.getRoundStatus().equals("Finished") && !(r.getInterview().getStatus().equals("Accepted") && r.getInterview().getStatus().equals("Rejected")))
+			if(r.getRoundStatus().equals("Finished") && (r.getInterview().getStatus().equals("ScheduledRound1") || r.getInterview().getStatus().equals("ScheduledRound2") || r.getInterview().getStatus().equals("ScheduledRound3")))
 				res.add(r);
 		}
 		return res;
@@ -63,6 +63,17 @@ public class RoundService {
 		return res;
 	}
 	
+	public Round getRoundByInterviewIdAndRoundStatus(Long iId, String status)
+	{
+		List<Round>round=repo.findAll();
+		Round res=null;
+		for(Round r:round)
+		{
+			if(r.getRoundStatus().equals(status) && r.getInterview().getInterviewId().equals(iId))
+				res=r;
+		}
+		return res;
+	}
 	public List<Round> getByEmployeeIdAndStatus(Long employee_id,String status)
 	{
 		List<Round> rounds=(List<Round>)repo.findAll();
@@ -73,7 +84,7 @@ public class RoundService {
 		
 		for(Round r:rounds)
 		{
-			if(r.getEmployee().getId()== employee_id && status.contentEquals(r.getRoundStatus()))
+			if(r.getEmployee().getId().equals(employee_id) && r.getRoundStatus().equals(status))
 			{
 				res.add(r);
 			}

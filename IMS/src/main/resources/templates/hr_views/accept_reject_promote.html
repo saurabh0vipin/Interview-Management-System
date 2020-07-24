@@ -43,21 +43,21 @@ tr:nth-child(even) {background-color: #f2f2f2;}
             </tr>
         </thead>
         <tbody>
-            <tr th:each="round : ${round}">
-                <td th:text="${round.roundId}">Round Id</td>
-                <td th:text="${round.roundStatus}">Round Status</td>
-                <td th:text="${round.startDate}">Start Time</td>
-                <td th:text="${round.duration}">Duration</td>
-                <td th:text="${round.feedback}">Feedback</td>
-                <td th:text="${round.rating}">Rating</td>
-                <td th:text="${round.employee.id}">Interviewer Id</td>
-                <td th:text="${round.interview.interviewId}">Interview Id</td>
+            <tr th:each="rounds : ${round}">
+                <td th:text="${rounds.roundId}">Round Id</td>
+                <td th:text="${rounds.roundStatus}">Round Status</td>
+                <td th:text="${rounds.startDate}">Start Time</td>
+                <td th:text="${rounds.duration}">Duration</td>
+                <td th:text="${rounds.feedback}">Feedback</td>
+                <td th:text="${rounds.rating}">Rating</td>
+                <td th:text="${rounds.employee.id}">Interviewer Id</td>
+                <td th:text="${rounds.interview.interviewId}">Interview Id</td>
                 <td>
-                     <a th:href="@{'/hr/accept/' + ${round.roundId}}">Accept</a>
+                     <a th:href="@{'/hr/accept/' + ${rounds.roundId}}">Accept</a>
                      &nbsp &nbsp &nbsp
-                     <a th:href="@{'/hr/reject/' + ${round.roundId}}">Reject</a>
+                     <a th:href="@{'/hr/reject/' + ${rounds.roundId}}">Reject</a>
                      &nbsp &nbsp &nbsp
-                     <a th:href="@{'/hr/promote_stage/' + ${round.roundId}}">Promote</a>
+                     <a th:href="@{'/hr/promote_stage/' + ${rounds.roundId}}">Promote</a>
                </td>
             </tr>
         </tbody>
