@@ -4,20 +4,24 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+//import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.wheelseye.IMS.mail.HtmlEmailSender;
 import com.wheelseye.IMS.model.Employee;
 import com.wheelseye.IMS.model.Interview;
 import com.wheelseye.IMS.model.Round;
+import com.wheelseye.IMS.sec.MyEmployeeDetails;
 import com.wheelseye.IMS.service.EmployeeDetailsServiceImpl;
 import com.wheelseye.IMS.service.InterviewService;
 import com.wheelseye.IMS.service.RoundService;
@@ -43,16 +47,7 @@ public class InterviewController {
 		mv.addObject("listInterview", listInterview);
 		return mv;
 	}
-	
-//	@RequestMapping("/hr/chnage_status")
-//	public ModelAndView viewChangeStatusPage()
-//	{
-//		ModelAndView mv=new ModelAndView("hr_views/interview_completed");
-//		List<Interview> listInterview=service.changeStatus();
-//		mv.addObject("listInterview", listInterview);
-//		return mv;
-//	}
-	
+		
 	@RequestMapping("/hr/show_interviewers/{interview_id}")
 	public ModelAndView viewInterviewerPage(@PathVariable(name="interview_id") Long interview_id)
 	{
@@ -163,11 +158,37 @@ public class InterviewController {
 		round.setRoundStatus("Scheduled");
 		round.setStartDate(LocalDateTime.parse(date));
 		//----------------------
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		MyEmployeeDetails currUser = (MyEmployeeDetails)authentication.getPrincipal();
+		
+		String intervieweeMailId=serviceR.getIntervieweeMailId(interview);
+		String jobPosition=serviceR.getJobPos(interview);
+		String rnd=interview.getStatus();
+		String hrName=currUser.getUsername();
+		Long phoneNo=currUser.getPhone();
+		//-------------------
+		
+		Long intervieweeId=serviceR.getIntervieweeId(interview);
+		
+		//----------------------
+		HtmlEmailSender mailer = new HtmlEmailSender();
+		try {
+			mailer.sendRoundEmail(intervieweeMailId, rnd, jobPosition, date,  hrName, phoneNo);
+			mailer.sendInterviewerMail(intervieweeId, interviewer.getEmailid(), rnd, jobPosition, date, hrName, phoneNo);
+			System.out.println("Email Successfully Sent.");
+		} catch (Exception ex) {
+			System.out.println("Failed to sent email.");
+			ex.printStackTrace();
+		}
+		
 		serviceR.save(round);
 		mv.setViewName("availibility_page");
 		return mv;
 	}
 	
+	
+		
 	@RequestMapping("/hr/rounds")
 	public ModelAndView showRoundPage()
 	{
@@ -226,13 +247,43 @@ public class InterviewController {
 		mv.addObject("round", round);
 		return mv;
 	}
-	
 
+	//sendRejectMail(String toAddress, String hrName, String intervieweeName, String jobPosition)
+	//sendAcceptMail(String toAddress, String hrName, String intervieweeName, String jobPosition)
+	
+//	HtmlEmailSender mailer = new HtmlEmailSender();
+//	try {
+//		mailer.sendRoundEmail(intervieweeMailId, rnd, jobPosition, date,  hrName, phoneNo);
+//		mailer.sendInterviewerMail(intervieweeId, interviewer.getEmailid(), rnd, jobPosition, date, hrName, phoneNo);
+//		System.out.println("Email Successfully Sent.");
+//	} catch (Exception ex) {
+//		System.out.println("Failed to sent email.");
+//		ex.printStackTrace();
+//	}
+	
 	@RequestMapping("/hr/accept/{id}")
 	public String accept(@PathVariable(value="id")Long id)
 	{
 		Interview interview=serviceR.getById(id).getInterview();
 		interview.setStatus("Accepted");
+		
+		//--------------------------
+		String intervieweeMailId=serviceR.getIntervieweeMailId(interview);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		MyEmployeeDetails currUser = (MyEmployeeDetails)authentication.getPrincipal();
+		String hrName=currUser.getUsername();
+		String jobPosition=serviceR.getJobPos(interview);
+		String intervieweeName=serviceR.getIntervieweeName(interview);
+		HtmlEmailSender mailer = new HtmlEmailSender();
+		try {
+			mailer.sendAcceptMail(intervieweeMailId, hrName, intervieweeName, jobPosition);
+			System.out.println("Email Successfully Sent.");
+		} catch (Exception ex) {
+			System.out.println("Failed to sent email.");
+			ex.printStackTrace();
+		}
+		//------------------------
+		
 		service.save(interview);
 		return "redirect:/hr/change_status";
 	}
@@ -242,6 +293,24 @@ public class InterviewController {
 	{
 		Interview interview=serviceR.getById(id).getInterview();
 		interview.setStatus("Rejected");
+		
+		//--------------------------
+				String intervieweeMailId=serviceR.getIntervieweeMailId(interview);
+				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+				MyEmployeeDetails currUser = (MyEmployeeDetails)authentication.getPrincipal();
+				String hrName=currUser.getUsername();
+				String jobPosition=serviceR.getJobPos(interview);
+				String intervieweeName=serviceR.getIntervieweeName(interview);
+				HtmlEmailSender mailer = new HtmlEmailSender();
+				try {
+					mailer.sendRejectMail(intervieweeMailId, hrName, intervieweeName, jobPosition);
+					System.out.println("Email Successfully Sent.");
+				} catch (Exception ex) {
+					System.out.println("Failed to sent email.");
+					ex.printStackTrace();
+				}
+		//------------------------
+				
 		service.save(interview);
 		return "redirect:/hr/change_status";
 	}

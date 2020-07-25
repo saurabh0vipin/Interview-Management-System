@@ -36,10 +36,24 @@ public class MyEmployeeDetails implements UserDetails{
 	public String getPassword() {
 		return employee.getPassword();
 	}
+	
+	public Long getUserId()
+	{
+		return employee.getId();
+	}
 
 	@Override
 	public String getUsername() {
 		return employee.getEmployeename();
+	}
+	
+	public String getEmail() {
+		return employee.getEmailid();
+	}
+	
+	public Long getPhone()
+	{
+		return employee.getPhonenumber();
 	}
 
 	@Override

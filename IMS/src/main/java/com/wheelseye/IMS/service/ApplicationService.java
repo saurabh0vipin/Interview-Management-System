@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wheelseye.IMS.model.Application;
+import com.wheelseye.IMS.model.Interview;
 import com.wheelseye.IMS.repository.ApplicationRepository;
 
 @Service
@@ -34,5 +35,16 @@ public class ApplicationService {
 	public void delete(Long id)
 	{
 		repo.deleteById(id);;
+	}
+	
+	public Application getApplication(Interview interview)
+	{
+		List<Application> application= repo.findAll();
+		for(Application app: application)
+		{
+			if(app.getInterview()==interview)
+				return app;
+		}
+		return null;
 	}
 }

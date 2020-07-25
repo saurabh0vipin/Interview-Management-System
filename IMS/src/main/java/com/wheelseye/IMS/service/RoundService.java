@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.wheelseye.IMS.model.Application;
+import com.wheelseye.IMS.model.Interview;
 import com.wheelseye.IMS.model.Round;
 import com.wheelseye.IMS.repository.RoundRepository;
 
@@ -14,6 +16,9 @@ public class RoundService {
 	
 	@Autowired
 	RoundRepository repo;
+	
+	@Autowired
+	ApplicationService serviceApp;
 	
 	public void save(Round round)
 	{
@@ -92,5 +97,29 @@ public class RoundService {
 		System.out.println(res.size());
 		return res;
 		
+	}
+	
+	public String getIntervieweeMailId(Interview interview)
+	{
+		Application application=serviceApp.getApplication(interview);
+		String mailID=application.getInterviewee().getIntervieweeMail();
+		return mailID;
+	}
+	
+	public String getIntervieweeName(Interview interview)
+	{
+		Application application=serviceApp.getApplication(interview);
+		return application.getInterviewee().getIntervieweeName();
+	}
+	public Long getIntervieweeId(Interview interview)
+	{
+		Application application=serviceApp.getApplication(interview);
+		return application.getInterviewee().getId();
+	}
+	public String getJobPos(Interview interview)
+	{
+		Application application=serviceApp.getApplication(interview);
+		String position= application.getJob().getPosIn().getPositionName();
+		return position;
 	}
 }
