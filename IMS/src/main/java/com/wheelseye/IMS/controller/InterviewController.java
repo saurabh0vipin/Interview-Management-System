@@ -247,20 +247,6 @@ public class InterviewController {
 		mv.addObject("round", round);
 		return mv;
 	}
-
-	//sendRejectMail(String toAddress, String hrName, String intervieweeName, String jobPosition)
-	//sendAcceptMail(String toAddress, String hrName, String intervieweeName, String jobPosition)
-	
-//	HtmlEmailSender mailer = new HtmlEmailSender();
-//	try {
-//		mailer.sendRoundEmail(intervieweeMailId, rnd, jobPosition, date,  hrName, phoneNo);
-//		mailer.sendInterviewerMail(intervieweeId, interviewer.getEmailid(), rnd, jobPosition, date, hrName, phoneNo);
-//		System.out.println("Email Successfully Sent.");
-//	} catch (Exception ex) {
-//		System.out.println("Failed to sent email.");
-//		ex.printStackTrace();
-//	}
-	
 	@RequestMapping("/hr/accept/{id}")
 	public String accept(@PathVariable(value="id")Long id)
 	{

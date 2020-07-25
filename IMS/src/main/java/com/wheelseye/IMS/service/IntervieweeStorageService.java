@@ -35,5 +35,16 @@ public class IntervieweeStorageService {
 	public void delete(Long id) {
 		intervieweeRepository.deleteById(id);
 	}
+	public Interviewee getByMail(String e_mail)
+	{
+		List<Interviewee>interviewees=intervieweeRepository.findAll();
+		
+		for(Interviewee ivu:interviewees)
+		{
+			if(ivu.getIntervieweeMail().equals(e_mail))
+				return ivu;
+		}
+		return null;
+	}
 }
 

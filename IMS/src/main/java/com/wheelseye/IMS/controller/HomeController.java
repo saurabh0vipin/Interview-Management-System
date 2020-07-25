@@ -1,6 +1,7 @@
 package com.wheelseye.IMS.controller;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -62,7 +63,12 @@ public class HomeController {
 	
 	@RequestMapping(value = "/interviewee/saveinterviewee/{job_id}", method = RequestMethod.POST)
 	public String saveInterviewee(@PathVariable(name = "job_id") Long job_id, @ModelAttribute("interviewee") Interviewee interviewee, @RequestParam("file") MultipartFile file){
-		try {
+		
+		Interviewee ivu=intervieweeStorageService.getByMail(interviewee.getIntervieweeMail());
+		//System.out.println(ivu);
+		if(ivu==null)
+			{
+			try {	
 			interviewee.setData(file.getBytes());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -72,6 +78,29 @@ public class HomeController {
 		interviewee.setResumeType(file.getContentType());
 		interviewee.setResumeName(file.getOriginalFilename());
 		intervieweeStorageService.save(interviewee);
+		}
+		else
+		{
+			boolean lastApplication = serviceApp.anyRecentApplication(ivu);
+			if(lastApplication==false)
+			{	
+			interviewee.setId(ivu.getId());
+			try {
+				interviewee.setData(file.getBytes());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+				
+			interviewee.setResumeType(file.getContentType());
+			interviewee.setResumeName(file.getOriginalFilename());
+			intervieweeStorageService.save(interviewee);
+			}
+			else
+			{
+				return "redirect:/interviewee/already_applied";
+			}
+		}
 		
 		Interview itrvew=new Interview();
 		
@@ -79,7 +108,8 @@ public class HomeController {
 		
 		Job job=serviceJob.get(job_id);
 		Application application=new Application();
-		application.setDate(new Date());
+		application.setDate(LocalDateTime.now());
+		
 		application.setJob(job);
 		application.setInterviewee(interviewee);
 		application.setInterview(itrvew);
@@ -89,6 +119,11 @@ public class HomeController {
 		return "redirect:/";
 	}
 	
+	@RequestMapping("/interviewee/already_applied")
+	public String alreadyApplied()
+	{
+		return "interviewee/recentlyApplied";
+	}
 	@RequestMapping("/editinterviewee/{id}")
 	public ModelAndView showEditProductForm(@PathVariable(name = "id") Long id) {
 		ModelAndView mav = new ModelAndView("interviewee/edit_interviewee");

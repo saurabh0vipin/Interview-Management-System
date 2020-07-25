@@ -24,10 +24,10 @@ public class Interviewee {
 	@Column(name="name")
 	private String intervieweeName;
 	
-	@Column(name="phone_no", unique = true)
+	@Column(name="phone_no")
 	private String intervieweePhoneNumber;
 	
-	@Column(name="email_id", unique = true)
+	@Column(name="email_id")
 	private String intervieweeMail;
 	
 	@Column(name="Experience")

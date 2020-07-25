@@ -1,5 +1,6 @@
 package com.wheelseye.IMS.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -23,7 +24,7 @@ public class Application {
 	private Long applicationId;
 	
 	@Column(name="date_applied_on")
-	private Date date;
+	private LocalDateTime date;
 	
 	@ManyToOne
 	@JoinColumn(name="interviewee_id")
@@ -40,7 +41,7 @@ public class Application {
 	public Application() {
 	}
 
-	public Application(Date date, Interviewee interviewee, Job job, Interview interview) {
+	public Application(LocalDateTime date, Interviewee interviewee, Job job, Interview interview) {
 		super();
 		this.date = date;
 		this.interviewee = interviewee;
@@ -57,18 +58,17 @@ public class Application {
 	public void setApplicationId(Long applicationId) {
 		this.applicationId = applicationId;
 	}
+	
+	public Interviewee getInterviewee() {
+		return interviewee;
+	}
 
-
-	public Date getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
-	}
-
-	public Interviewee getInterviewee() {
-		return interviewee;
 	}
 
 	public void setInterviewee(Interviewee interviewee) {

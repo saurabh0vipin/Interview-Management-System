@@ -40,8 +40,8 @@ public class HtmlEmailSender {
 		//SMTP Server Information
 		String host = "smtp.gmail.com";
 		String port = "587";
-		final String mailFrom = "saurabh.verma@wheelseye.com";
-		final String password = "IMSystem@123";
+		final String mailFrom = "ims.app.wheelseye@gmail.com";
+		final String password = "IMSapplication@123";
 
 		// sets SMTP server properties
 		Properties properties = new Properties();
@@ -101,8 +101,8 @@ public class HtmlEmailSender {
 			//SMTP Server Information
 			String host = "smtp.gmail.com";
 			String port = "587";
-			final String mailFrom = "saurabh.verma@wheelseye.com";
-			final String password = "IMSystem@123";
+			final String mailFrom = "ims.app.wheelseye@gmail.com";
+			final String password = "IMSapplication@123";
 
 			// sets SMTP server properties
 			Properties properties = new Properties();
@@ -156,8 +156,8 @@ public class HtmlEmailSender {
 		//SMTP Server Information
 		String host = "smtp.gmail.com";
 		String port = "587";
-		final String mailFrom = "saurabh.verma@wheelseye.com";
-		final String password = "IMSystem@123";
+		final String mailFrom = "ims.app.wheelseye@gmail.com";
+		final String password = "IMSapplication@123";
 
 
 		// sets SMTP server properties
@@ -211,8 +211,8 @@ public class HtmlEmailSender {
 		//SMTP Server Information
 		String host = "smtp.gmail.com";
 		String port = "587";
-		final String mailFrom = "saurabh.verma@wheelseye.com";
-		final String password = "IMSystem@123";
+		final String mailFrom = "ims.app.wheelseye@gmail.com";
+		final String password = "IMSapplication@123";
 
 		// sets SMTP server properties
 		Properties properties = new Properties();
