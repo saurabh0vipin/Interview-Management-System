@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:th="http://www.thymeleaf.org">
+<head>
+<style>
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+</style>
+<meta charset="ISO-8859-1">
+<title>Rounds</title>
+</head>
+<body>
+
+<div align="center", sec:authorize="isAuthenticated()">
+		Welcome <b><span sec:authentication="name">Employeename</span></b>
+		&nbsp;
+		<i><span sec:authentication="principal.authorities">Roles</span></i>
+		<form th:action="@{/logout}" method="post">
+		<input type="submit" value="Logout" />
+	 	</form>
+	 	<form th:action="@{/back}" method="post">
+		<input type="submit" value="Back" />
+	 	</form>
+</div>
+
+
+<div align="center">
+    <h1>rounds</h1>
+    <br/><br/>
+    <table cellpadding="20" style="width:800px">
+        <thead>
+            <tr style="background-color:rgb(150,150,150)">
+                <th>Round Id</th>
+                <th>Round status</th>
+                <th>Start Time</th>
+                <th>Duration</th>
+                <th>Feedback</th>
+                <th>Rating</th>
+                <th>Interviewer Id</th>
+                <th>Interview Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="round : ${round}">
+                <td th:text="${round.roundId}">Round Id</td>
+                <td th:text="${round.roundStatus}">Round Status</td>
+                <td th:text="${round.startDate}">Start Time</td>
+                <td th:text="${round.duration}">Duration</td>
+                <td th:text="${round.feedback}">Feedback</td>
+                <td th:text="${round.rating}">Rating</td>
+                <td th:text="${round.employee.id}">Interviewer Id</td>
+                <td th:text="${round.interview.interviewId}">Interview Id</td>
+                <td>
+                     <a th:href="@{'/interviewer/rate_rounds/' + ${round.roundId}}">Rate and Feedback</a>
+               </td>
+            </tr>
+        </tbody>
+    </table>
+</div>   
+</body>
+</html>

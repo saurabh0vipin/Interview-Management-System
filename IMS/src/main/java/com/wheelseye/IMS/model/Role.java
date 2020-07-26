@@ -26,6 +26,16 @@ public class Role {
 	@OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Employee> employee = new ArrayList<>();
 	
+	
+	public Role() {
+	}
+
+	public Role(String name, List<Employee> employee) {
+		super();
+		this.name = name;
+		this.employee = employee;
+	}
+	
 	public Long getId() {
 		return id;
 	}

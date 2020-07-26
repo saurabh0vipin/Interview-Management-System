@@ -8,7 +8,7 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 
 </style>
 <meta charset="ISO-8859-1">
-<title>Current Employees</title>
+<title>Scheduled Interviews</title>
 </head>
 <body>
 
@@ -26,26 +26,32 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 
 
 <div align="center">
-    <h1>Current Employees</h1>
+    <h1>All rounds/ratings/status</h1>
     <br/><br/>
-    <a href="/admin/roles">add new Employees</a>
-    <br><br>
     <table cellpadding="20" style="width:800px">
         <thead>
             <tr style="background-color:rgb(150,150,150)">
-                <th>Name</th>
-                <th>Email ID</th>
-                <th>Phone no</th>
+                <th>Round Id</th>
+                <th>Round status</th>
+                <th>Start Time</th>
+                <th>Duration</th>
+                <th>Interviewer Id</th>
+                <th>Interview Id</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="listEmpl : ${empl}">
-                <td th:text="${listEmpl.employeename}">Name</td>
-                <td th:text="${listEmpl.emailid}">Email Id</td>
-                <td th:text="${listEmpl.phonenumber}">Phone no</td>
+            <tr th:each="round : ${schRound}">
+                <td th:text="${round.roundId}">Round Id</td>
+                <td th:text="${round.roundStatus}">Round Status</td>
+                <td th:text="${round.startDate}">Start Time</td>
+                <td th:text="${round.duration}">Duration</td>
+                <td th:text="${round.employee.id}">Interviewer Id</td>
+                <td th:text="${round.interview.interviewId}">Interview Id</td>
                 <td>
-                     <a th:href="@{'/admin/delete/' + ${listEmpl.id}}">Delete</a>
+                     <a th:href="@{'/hr/reshedule_round/' + ${round.roundId}}">Reschedule</a>
+                     &nbsp &nbsp &nbsp
+                     <a th:href="@{'/hr/cancel_round/' + ${round.roundId}}">Cancel</a>
                </td>
             </tr>
         </tbody>
