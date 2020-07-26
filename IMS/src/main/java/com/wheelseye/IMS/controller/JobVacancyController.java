@@ -54,6 +54,10 @@ public class JobVacancyController {
 		PositionInOrganization pos_in_org= servicePos.get(id);
 		job.setPosIn(pos_in_org);
 		job.setDatePosted(""+java.time.LocalDate.now());
+		if(job.getJobTitle().isEmpty())
+		{
+			return "IncorrectData";
+		}
 	    serviceJob.save(job);
 	    return "redirect:/hr/position_in_org";
 	    }
@@ -70,6 +74,10 @@ public class JobVacancyController {
 	@RequestMapping(value="/hr/job_openings/save",method = RequestMethod.POST)
 	public String editedSave(@ModelAttribute("job") Job job)
 	{
+		if(job.getJobTitle().isEmpty())
+		{
+			return "IncorrectData";
+		}
 		serviceJob.save(job);
 		return "redirect:/hr/job_openings";
 	}

@@ -1,6 +1,7 @@
 package com.wheelseye.IMS.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -49,7 +50,19 @@ public class ApplicationService {
 		}
 		return null;
 	}
-	
+  public List<Application> toBeScheduled()
+  {
+  	List<Application> sch= repo.findAll();
+  	List<Application> res=new ArrayList();
+  	for(Application s: sch)
+  	{
+  		if(s.getInterview().getStatus().equals("QualifiedRound1") || s.getInterview().getStatus().equals("QualifiedRound2") || s.getInterview().getStatus().equals("Applied"))
+  		{
+  			res.add(s);
+  		}
+  	}
+  	return res;
+  }
 	public boolean anyRecentApplication(Interviewee interviewee)
 	{
 		List<Application> application=repo.findAll();

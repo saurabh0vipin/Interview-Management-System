@@ -26,9 +26,9 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 
 
 <div align="center">
-    <h1>Current Employees</h1>
+    <h2>Current Users</h2>
     <br/><br/>
-    <a href="/admin/roles">add new Employees</a>
+    <a href="/admin/roles">add new User</a>
     <br><br>
     <table cellpadding="20" style="width:800px">
         <thead>
@@ -36,6 +36,7 @@ tr:nth-child(even) {background-color: #f2f2f2;}
                 <th>Name</th>
                 <th>Email ID</th>
                 <th>Phone no</th>
+                <th>Role</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -44,6 +45,7 @@ tr:nth-child(even) {background-color: #f2f2f2;}
                 <td th:text="${listEmpl.employeename}">Name</td>
                 <td th:text="${listEmpl.emailid}">Email Id</td>
                 <td th:text="${listEmpl.phonenumber}">Phone no</td>
+				<td th:text="${listEmpl.role.name}">Phone no</td>
                 <td>
                      <a th:href="@{'/admin/delete/' + ${listEmpl.id}}">Delete</a>
                </td>

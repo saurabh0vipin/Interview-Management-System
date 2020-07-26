@@ -66,6 +66,10 @@ public class PositionInOrgController {
 	
 	@RequestMapping(value = "/hr/save", method = RequestMethod.POST)
 	public String saveJobPos(@ModelAttribute("positionInOrganization") PositionInOrganization positionInOrganization) {
+		if(positionInOrganization.getPositionName().isEmpty())
+		{
+			return "IncorrectData";
+		}
 	    service.save(positionInOrganization);
 	    return "redirect:/hr/position_in_org";
 	}

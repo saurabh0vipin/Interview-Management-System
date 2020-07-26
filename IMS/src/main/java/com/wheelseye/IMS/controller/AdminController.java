@@ -1,5 +1,6 @@
 package com.wheelseye.IMS.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,15 @@ public class AdminController {
 	public ModelAndView viewEmployeesPage()
 	{
 		ModelAndView mv=new ModelAndView("admin_view/Employees_present");
-		List<Employee> empl=(List<Employee>)repo.findAll();
+		List<Employee> employee=(List<Employee>)repo.findAll();
+		List<Employee>empl=new ArrayList<>();
+		for(Employee e:employee)
+		{
+			if(e.getRole().getName().equals("HR") || e.getRole().getName().equals("INTERVIEWER"))
+			{
+				empl.add(e);
+			}
+		}
 		mv.addObject("empl", empl);
 		return mv;
 	}
@@ -40,7 +49,13 @@ public class AdminController {
 	public ModelAndView viewRolePage()
 	{
 		ModelAndView mv = new ModelAndView("admin_view/roles");
-		List<Role> listRole = repoRole.findAll();
+		List<Role> listR = repoRole.findAll();
+		List<Role> listRole=new ArrayList<>();
+		for(Role r:listR)
+		{
+			if(r.getName().equals("HR") || r.getName().equals("INTERVIEWER"))
+				listRole.add(r);
+		}
 		mv.addObject("listRole", listRole);
 		return mv;
 	}
@@ -62,8 +77,14 @@ public class AdminController {
 		String encrpyted_pass= encoder.encode(employee.getPassword());
 		employee.setPassword(encrpyted_pass);
 		employee.setEnabled(true);
-		repo.save(employee);
-		return "redirect:/admin/roles";
+		try {
+			repo.save(employee);
+		    } 
+		catch (Exception e) {
+		      return "IncorrectData";
+		    }
+		
+		return "redirect:/admin/view_employee";
 	}
 	
 	@RequestMapping("/admin/delete/{id}")

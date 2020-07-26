@@ -32,16 +32,18 @@ tr:nth-child(even) {background-color: #f2f2f2;}
         <thead>
             <tr style="background-color:rgb(150,150,150)">
                 <th>Interview Id</th>
+                <th>Candidate Name</th>
                 <th>Interview status</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="listInterview : ${listInterview}">
-                <td th:text="${listInterview.interviewId}">Employee Id</td>
-                <td th:text="${listInterview.status}">Interviewer Name</td>
+            <tr th:each="listApplication : ${listApplication}">
+                <td th:text="${listApplication.interview.interviewId}">Interview Id</td>
+                <td th:text="${listApplication.interviewee.intervieweeName}">Interviewee Name</td>
+                <td th:text="${listApplication.interview.status}">Interview status</td>
                 <td>
-                     <a th:href="@{'/hr/show_interviewers/' + ${listInterview.interviewId}}">choose Interviewer</a>
+                     <a th:href="@{'/hr/show_interviewers/' + ${listApplication.interview.interviewId}}">choose Interviewer</a>
                </td>
             </tr>
         </tbody>

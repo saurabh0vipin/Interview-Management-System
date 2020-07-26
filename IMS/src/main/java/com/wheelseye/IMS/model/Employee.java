@@ -21,10 +21,13 @@ public class Employee {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	
-
+	@Column(name="employeename", nullable = false)
 	private String employeename;
+	@Column(name="emailid", nullable = false)
 	private String emailid;
+	@Column(name="password",nullable = false)
 	private String password;
+	@Column(name="phonenumber",nullable = false)
 	private Long phonenumber;
 	private boolean enabled;
 	

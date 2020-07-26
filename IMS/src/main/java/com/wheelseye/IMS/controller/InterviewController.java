@@ -2,6 +2,7 @@ package com.wheelseye.IMS.controller;
 
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 //import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.wheelseye.IMS.mail.HtmlEmailSender;
+import com.wheelseye.IMS.model.Application;
 import com.wheelseye.IMS.model.Employee;
 import com.wheelseye.IMS.model.Interview;
 import com.wheelseye.IMS.model.Round;
 import com.wheelseye.IMS.sec.MyEmployeeDetails;
+import com.wheelseye.IMS.service.ApplicationService;
 import com.wheelseye.IMS.service.EmployeeDetailsServiceImpl;
 import com.wheelseye.IMS.service.InterviewService;
 import com.wheelseye.IMS.service.RoundService;
@@ -38,13 +41,16 @@ public class InterviewController {
 	@Autowired
 	RoundService serviceR;
 	
+	@Autowired
+	ApplicationService serviceApp;
 	
 	@RequestMapping("/hr/sch_interviews")
 	public ModelAndView viewInterviewPage()
 	{
 		ModelAndView mv=new ModelAndView("hr_views/available_interviews");
-		List<Interview> listInterview=service.toBeScheduled();
-		mv.addObject("listInterview", listInterview);
+		List<Application> listApplication=serviceApp.toBeScheduled();
+		
+		mv.addObject("listApplication", listApplication);
 		return mv;
 	}
 		
@@ -326,7 +332,18 @@ public class InterviewController {
 	public ModelAndView rateRound()
 	{
 		ModelAndView mv=new ModelAndView("round_view/rate_rounds");
-		List<Round>round=serviceR.listAll();
+		List<Round>roundAll=serviceR.listAll();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		MyEmployeeDetails currUser = (MyEmployeeDetails)authentication.getPrincipal();
+		Long interviewer_id=currUser.getUserId();
+		List<Round>round=new ArrayList<>();
+		for(Round r:roundAll)
+		{
+			if(r.getEmployee().getId().equals(interviewer_id) && r.getRoundStatus().equals("Scheduled"))
+			{
+				round.add(r);
+			}
+		}
 		mv.addObject("round", round);
 		return mv;
 	}
