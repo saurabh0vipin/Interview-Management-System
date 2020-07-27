@@ -77,10 +77,20 @@ public class InterviewController {
 	public ModelAndView machingOverlap(@PathVariable(value="eId")Long eId,@RequestParam(value="date")String date,
 			@RequestParam(value="duration")Integer dur,@PathVariable(value="iId")Long iId) throws ParseException
 	{
+		ModelAndView mav = new ModelAndView();
+		
+		//--------------------
+		
+		if(dur<=0 || LocalDateTime.parse(date).isBefore(LocalDateTime.now()))
+		{
+			mav.setViewName("IncorrectData");
+			return mav;
+		}
+		
+		//--------------------
+		
 		String message = new String("");
 		System.out.println(date);
-	    
-	    ModelAndView mav = new ModelAndView();
 	    
 	    mav.addObject("eId", eId);
 	    mav.addObject("iId",iId);
@@ -121,10 +131,13 @@ public class InterviewController {
 		return mav;
 		
 	}
-	
+
 	@RequestMapping("/hr/scheduleround/{employee_id}/{interview_id}/{date}/{duration}")
 	public ModelAndView makeNewRound(@PathVariable(value="interview_id") Long iId,@PathVariable(value="employee_id") Long eId, @PathVariable(value="date")String date,@PathVariable(value="duration")Integer dur)
 	{
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		MyEmployeeDetails currUser = (MyEmployeeDetails)authentication.getPrincipal();
+		
 		ModelAndView mv=new ModelAndView();
 		Employee interviewer=serviceEmp.get(eId);
 		Interview interview=service.get(iId);
@@ -148,12 +161,32 @@ public class InterviewController {
 		}
 		else //resheduled fall
 		{
-			Round rnd = serviceR.getRoundByInterviewIdAndRoundStatus(iId,"Scheduled");
-			rnd.setDuration(dur);
-			rnd.setStartDate(LocalDateTime.parse(date));
-			rnd.setEmployee(interviewer);
-			serviceR.save(rnd);
-			mv.setViewName("availibility_page");
+			Round round = serviceR.getRoundByInterviewIdAndRoundStatus(iId,"Scheduled");
+			round.setDuration(dur);
+			round.setStartDate(LocalDateTime.parse(date));
+			round.setEmployee(interviewer);
+			
+			String intervieweeMailId=serviceR.getIntervieweeMailId(interview);
+			String rnd=interview.getStatus();
+			String hrName=currUser.getUsername();
+			Long phoneNo=currUser.getPhone();
+			//-------------------
+			
+			Long intervieweeId=serviceR.getIntervieweeId(interview);
+			
+			//----------------------
+			HtmlEmailSender mailer = new HtmlEmailSender();
+			try {
+				mailer.sendRoundEmail(intervieweeMailId, rnd, date,  hrName, phoneNo,1);
+				mailer.sendInterviewerMail(intervieweeId, interviewer.getEmailid(), rnd, date, hrName, phoneNo,1);
+				System.out.println("Email Successfully Sent.");
+			} catch (Exception ex) {
+				System.out.println("Failed to sent email.");
+				ex.printStackTrace();
+			}
+			
+			serviceR.save(round);
+			mv.setViewName("redirect:/hr/resch_cancel_interviews");
 			return mv;
 		}
 		
@@ -165,11 +198,7 @@ public class InterviewController {
 		round.setStartDate(LocalDateTime.parse(date));
 		//----------------------
 		
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		MyEmployeeDetails currUser = (MyEmployeeDetails)authentication.getPrincipal();
-		
 		String intervieweeMailId=serviceR.getIntervieweeMailId(interview);
-		String jobPosition=serviceR.getJobPos(interview);
 		String rnd=interview.getStatus();
 		String hrName=currUser.getUsername();
 		Long phoneNo=currUser.getPhone();
@@ -180,16 +209,15 @@ public class InterviewController {
 		//----------------------
 		HtmlEmailSender mailer = new HtmlEmailSender();
 		try {
-			mailer.sendRoundEmail(intervieweeMailId, rnd, jobPosition, date,  hrName, phoneNo);
-			mailer.sendInterviewerMail(intervieweeId, interviewer.getEmailid(), rnd, jobPosition, date, hrName, phoneNo);
+			mailer.sendRoundEmail(intervieweeMailId, rnd, date,  hrName, phoneNo,0);
+			mailer.sendInterviewerMail(intervieweeId, interviewer.getEmailid(), rnd, date, hrName, phoneNo,0);
 			System.out.println("Email Successfully Sent.");
 		} catch (Exception ex) {
 			System.out.println("Failed to sent email.");
 			ex.printStackTrace();
 		}
-		
 		serviceR.save(round);
-		mv.setViewName("availibility_page");
+		mv.setViewName("redirect:/hr/sch_interviews");
 		return mv;
 	}
 	
@@ -217,9 +245,36 @@ public class InterviewController {
 	@RequestMapping("/hr/cancel_round/{id}")
 	public String cancelRound(@PathVariable(name="id") Long id)
 	{
-		Long rnd=serviceR.getInterviewId(id);
-		Interview interview=service.get(rnd);
+		Long round_id=serviceR.getInterviewId(id);
+		Interview interview=service.get(round_id);
 		String status=interview.getStatus();
+		Round round=serviceR.getById(round_id);
+		//--------------------------
+				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+				MyEmployeeDetails currUser = (MyEmployeeDetails)authentication.getPrincipal();
+				//----------------------
+				
+				String intervieweeMailId=serviceR.getIntervieweeMailId(interview);
+				String rnd=interview.getStatus();
+				String hrName=currUser.getUsername();
+				Long phoneNo=currUser.getPhone();
+				//-------------------
+				String date=""+serviceR.getById(round_id).getStartDate();
+				Long intervieweeId=serviceR.getIntervieweeId(interview);
+				
+				//----------------------
+	
+				HtmlEmailSender mailer = new HtmlEmailSender();
+				try {
+					mailer.sendRoundEmail(intervieweeMailId, rnd, date,  hrName, phoneNo,2);
+					mailer.sendInterviewerMail(intervieweeId,round.getEmployee().getEmailid(), rnd, date, hrName, phoneNo,2);
+					System.out.println("Email Successfully Sent.");
+				} catch (Exception ex) {
+					System.out.println("Failed to sent email.");
+					ex.printStackTrace();
+				}
+		//------------------------
+				
 		if(status.equals("ScheduledRound1"))
 		{
 			interview.setStatus("Applied");
@@ -240,7 +295,6 @@ public class InterviewController {
 	public String resheduleRound(@PathVariable(name="id") Long id)
 	{
 		Long x=serviceR.getInterviewId(id);
-//		serviceR.delete(id);
 		return "redirect:/hr/show_interviewers/"+x;
 	}
 	
@@ -264,11 +318,10 @@ public class InterviewController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		MyEmployeeDetails currUser = (MyEmployeeDetails)authentication.getPrincipal();
 		String hrName=currUser.getUsername();
-		String jobPosition=serviceR.getJobPos(interview);
 		String intervieweeName=serviceR.getIntervieweeName(interview);
 		HtmlEmailSender mailer = new HtmlEmailSender();
 		try {
-			mailer.sendAcceptMail(intervieweeMailId, hrName, intervieweeName, jobPosition);
+			mailer.sendAcceptMail(intervieweeMailId, hrName, intervieweeName);
 			System.out.println("Email Successfully Sent.");
 		} catch (Exception ex) {
 			System.out.println("Failed to sent email.");
@@ -291,11 +344,10 @@ public class InterviewController {
 				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 				MyEmployeeDetails currUser = (MyEmployeeDetails)authentication.getPrincipal();
 				String hrName=currUser.getUsername();
-				String jobPosition=serviceR.getJobPos(interview);
 				String intervieweeName=serviceR.getIntervieweeName(interview);
 				HtmlEmailSender mailer = new HtmlEmailSender();
 				try {
-					mailer.sendRejectMail(intervieweeMailId, hrName, intervieweeName, jobPosition);
+					mailer.sendRejectMail(intervieweeMailId, hrName, intervieweeName);
 					System.out.println("Email Successfully Sent.");
 				} catch (Exception ex) {
 					System.out.println("Failed to sent email.");
@@ -328,14 +380,19 @@ public class InterviewController {
 		return "redirect:/hr/change_status";
 	}
 	
+	
+	//Interviewer part
+	
 	@RequestMapping("/interviewer/rate")
 	public ModelAndView rateRound()
 	{
 		ModelAndView mv=new ModelAndView("round_view/rate_rounds");
 		List<Round>roundAll=serviceR.listAll();
+		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		MyEmployeeDetails currUser = (MyEmployeeDetails)authentication.getPrincipal();
 		Long interviewer_id=currUser.getUserId();
+		
 		List<Round>round=new ArrayList<>();
 		for(Round r:roundAll)
 		{

@@ -14,11 +14,11 @@
             <table border="0" cellpadding="10">
            		<tr>
                     <td>Rating:</td>
-                    <td><input type="text" pattern="[0-4].[0-9]" th:field="*{rating}"/></td>
+                    <td><input type="text" pattern="[0-4].[0-9]" th:field="*{rating}" required/></td>
                 </tr> 
                 <tr>
                     <td>Feedback:</td>
-                    <td><input type="text"  th:field="*{feedback}" /></td>
+                    <td><input type="text"  th:field="*{feedback}" required/></td>
                 </tr>                           
                 <tr>
                     <td colspan="2"><button type="submit">Save</button> </td>

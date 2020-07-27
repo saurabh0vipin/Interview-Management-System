@@ -53,7 +53,7 @@ public class PositionInOrgController {
 	@RequestMapping(value="/back", method=RequestMethod.POST)
 	public String goBack()
 	{
-		return "redirect:/";
+		return "redirect:/indexAccess";
 	}
 	
 	@RequestMapping("/hr/delete/{id}")

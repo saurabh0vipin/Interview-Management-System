@@ -46,6 +46,12 @@ public class HomeController {
 		return "index";
 	}	
 	
+	@RequestMapping("/indexAccess")
+	public String loginPage()
+	{
+		return "indexAccess";
+	}
+	
 	@RequestMapping("/listinterviewee")
 	public String get(Model model) {
 		List<Interviewee> listInterviewees = intervieweeStorageService.listAll();
