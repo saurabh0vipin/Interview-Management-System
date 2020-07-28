@@ -1,7 +1,9 @@
 package com.wheelseye.IMS.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,7 +55,27 @@ public class RoundService {
 			if(r.getRoundStatus().equals("Finished") && (r.getInterview().getStatus().equals("ScheduledRound1") || r.getInterview().getStatus().equals("ScheduledRound2") || r.getInterview().getStatus().equals("ScheduledRound3")))
 				res.add(r);
 		}
-		return res;
+		//return res;
+		HashMap<Long, Round> ls=new HashMap<Long,Round>();
+		for(Round r:res)
+		{
+			if(ls.get(r.getInterview().getInterviewId())==null)
+			{
+				ls.put(r.getInterview().getInterviewId(), r);
+			}
+			else
+			{
+				if(ls.get(r.getInterview().getInterviewId()).getRoundId()<r.getRoundId())
+				{
+					ls.put(r.getInterview().getInterviewId(), r);
+				}
+			}
+		}
+		List<Round>res_temp=new ArrayList<>();
+		for (Map.Entry<Long, Round> entry : ls.entrySet()) {
+			res_temp.add(entry.getValue());
+		}
+		return res_temp;
 	}
 	
 	public List<Round> getAllscheduledRound()
