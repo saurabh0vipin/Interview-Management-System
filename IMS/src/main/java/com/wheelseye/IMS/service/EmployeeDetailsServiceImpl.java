@@ -34,7 +34,6 @@ public class EmployeeDetailsServiceImpl implements UserDetailsService{
 	public List<Employee> getInterviewers()
 	{
 		List<Employee> empl= (List<Employee>)employeeRepository.findAll();
-		//System.out.println(empl.size());
 		List<Employee> interviewer = new ArrayList<>();
 		for(Employee emp: empl)
 		{
@@ -43,7 +42,6 @@ public class EmployeeDetailsServiceImpl implements UserDetailsService{
 				interviewer.add(emp);
 			}
 		}
-		//System.out.println(interviewer.size());
 		return interviewer;
 	}
 	

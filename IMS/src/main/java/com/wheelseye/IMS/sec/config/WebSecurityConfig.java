@@ -43,17 +43,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			//.antMatchers("/").hasAnyAuthority("INTERVIEWEE", "INTERVIEWER", "HR", "ADMIN")
 			.antMatchers("/").permitAll()
 			.antMatchers("/newinterviewee/*").hasAnyAuthority("INTERVIEWEE", "INTERVIEWER", "HR", "ADMIN")
 			
-			.antMatchers("/editinterviewee/*").hasAnyAuthority("HR", "ADMIN")
-			.antMatchers("/listinterviewee/*").hasAnyAuthority("INTERVIEWER", "HR", "ADMIN")
-			.antMatchers("/deleteinterviewee/*").hasAnyAuthority("HR", "ADMIN")
+			.antMatchers("/editinterviewee/*").hasAnyAuthority("HR")
+			.antMatchers("/listinterviewee/*").hasAnyAuthority("HR")
+			.antMatchers("/deleteinterviewee/*").hasAnyAuthority("HR")
 			.antMatchers("/downloadFile/*").hasAnyAuthority("INTERVIEWER", "HR", "ADMIN")
 			
 			.antMatchers("/hr/**").hasAuthority("HR")
-			//.antMatchers("/interviewee/**").hasAuthority("INTERVIEWEE")
 			.antMatchers("/interviewee/**").permitAll()
 			
 			.antMatchers("/admin/**").hasAuthority("ADMIN")

@@ -138,9 +138,5 @@ public class RoundService {
 		Application application=serviceApp.getApplication(interview);
 		return application.getInterviewee().getId();
 	}
-//	public String getJobPos(Interview interview)
-//	{
-//		Application application=serviceApp.getApplication(interview);
-//		return application.getJob().getPosIn().getPositionName();
-//	}
+
 }
